@@ -1,5 +1,5 @@
 #-----------Twitter sentiment analysis-----------------------
-# http://dataaspirant.com/2018/03/22/twitter-sentiment-analysis-using-r/
+
 # Analysis over a Twitter, downloading it's tweets and getting a sentiment analysis on them
 
 #  Install Requried Packages
@@ -14,7 +14,7 @@ library("tm")
 library("twitteR")
 library("syuzhet")
 
-#--Invoking Twitter API using the keys and tokens
+# Invoking Twitter API using the keys and tokens. 
 consumer_key <- '####'
 consumer_secret <- '####'
 access_token <- '####'
@@ -22,16 +22,15 @@ access_secret <- '####'
 
 setup_twitter_oauth(consumer_key, consumer_secret, access_token, access_secret)
 
-#--In this case, input from @realDonaldTrump  // @cabify_españa de 200 tweets
+# In this case, we use input from @realDonaldTrump twitter account.
 tweets <- userTimeline("FinancialTimes", n=200)
 n.tweet <- length(tweets)
 
-
-#--Cleaning data with fucntion twListToDF (twitteR) that converts lists to data.frames
+# Cleaning data with fucntion twListToDF (twitteR) that converts lists to data.frames
 tweets.df <- twListToDF(tweets) 
 head(tweets.df)
 
-#Cleaning hashtags and URLs from text using gsub function
+# Cleaning hashtags and URLs from text using gsub function
 tweets.df2 <- gsub("http.*","",tweets.df$text)
 tweets.df2 <- gsub("https.*","",tweets.df2)
 tweets.df2 <- gsub("#.*","",tweets.df2)
@@ -39,7 +38,7 @@ tweets.df2 <- gsub("@.*","",tweets.df2)
 
 head(tweets.df2)
 
-#--Sentiment score for each tweet.We will first try to get the emotion score for each of the tweets.
+# Sentiment score for each tweet.We will first try to get the emotion score for each of the tweets.
 #‘Syuzhet’ breaks the emotion into 10 different emotions – anger, anticipation, disgust, fear, joy, sadness,
 #surprise, trust, negative and positive.
 
@@ -48,7 +47,7 @@ emotion.df <- get_nrc_sentiment(word.df)        #function from syuzhet that calc
 emotion.df2 <- cbind(tweets.df2, emotion.df)    #function to combine R objects by rows or columns
 head(emotion.df2)
 
-#--Using get_sentiment fucntion to extract sentiment scores
+# Using get_sentiment fucntion to extract sentiment scores
 sent.value <- get_sentiment(word.df)            #function from syuzhet. Iterates over a vector of strings and returns sentiment values based on user supplied method. 
 
   #Getting the most positive sentiment
@@ -59,10 +58,10 @@ sent.value <- get_sentiment(word.df)            #function from syuzhet. Iterates
   most.negative <- word.df[sent.value <= min(sent.value)] 
   most.negative 
 
-#Para ver las puntuaciones individuales de toda la muestra de tweets
+# To visualize scores for each tweet
 sent.value
   
-#--Segregating positive and negative tweets
+# Segregating positive and negative tweets
   positive.tweets <- word.df[sent.value > 0]
   head(positive.tweets)
   
@@ -76,10 +75,10 @@ sent.value
 category_senti <- ifelse(sent.value < 0, "Negative", ifelse(sent.value > 0, "Positive", "Neutral"))
 head(category_senti)
 
-#--Summary de los últimos 5 tweets
+# Summary (last 5 tweets)
 head(category_senti)
 
-#--Final summary
+# Final summary
 table(category_senti)
 
 
