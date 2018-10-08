@@ -1,1 +1,1 @@
-# Implementation of a simple Twitter Sentiment Analysis
+Implementation of a simple Twitter Sentiment Analysis
